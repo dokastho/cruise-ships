@@ -3,9 +3,19 @@
 
 #include <string>
 
+using namespace std;
+
 struct ship {
     int tourists = 100;
     string name;
+};
+
+class route {
+    int difficulty;
+    public:
+    route(const int diff_in);
+    void short_way();
+    void long_way();
 };
 
 // this class does the following
@@ -13,12 +23,14 @@ struct ship {
 //  - causes storms, diseases, and mechanical failures
 //  - checks win conditions
 class cruise {
-    int turns;
+    int turns,difficulty;
+    route path;
     string start,destination;
     public:
-    cruise(const int turns_in,const string start_in,const string dest_in);
+    cruise(const int turns_in,const string start_in,const string dest_in,const int diff_in);
     int get_turns();
-    void progress();
+    void count_down_turns();
+    void progress(const int route_choice);
     void disease();
     void breakdown();
     void win();
@@ -27,7 +39,8 @@ class cruise {
 class pirate {
     public:
     virtual void harm() = 0;
-    virtual void get_type();
+    virtual void get_type() = 0;
+    virtual ~pirate() {};
 };
 
 pirate * pirate_maker(const int turns);
