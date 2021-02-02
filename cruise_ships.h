@@ -5,17 +5,29 @@
 
 using namespace std;
 
+const char *names[10] = {"St. Thomas ","Toucan ","Tazmanian ","Virgin ",
+                        "Nohea ","Khalua ","Lulea ","Fort Cox ","Moana ","Tiki "};
+const char *other_names[10] = {"Great ","Grand ","Rich ","Tropics ","Blue ",
+                             "Getaway ","Resort ","Destination ","Dune ","Paradise "};
+const char *identifiers[10] = {"Island","Islands","Archipelago","Cliffs",
+                              "Isle","Isla","Point","Peninsula","Isthmus","Lagoon"};
+
 struct ship {
     int tourists = 100;
+    int turns;
+    int score = 0;
+    string name;
+};
+
+struct location {
     string name;
 };
 
 class route {
-    int difficulty;
+    int halfway;
     public:
-    route(const int diff_in);
-    void short_way();
-    void long_way();
+    route(const int halfway_in);
+    void way(cruise &player_cruise,bool long_way);
 };
 
 // this class does the following
@@ -23,27 +35,35 @@ class route {
 //  - causes storms, diseases, and mechanical failures
 //  - checks win conditions
 class cruise {
-    int turns,difficulty;
-    route path;
+    int difficulty;
+    ship * boat;
+    route * path;
     string start,destination;
     public:
-    cruise(const int turns_in,const string start_in,const string dest_in,const int diff_in);
+    cruise(const string start_in,const string dest_in,const int diff_in);
     int get_turns();
-    void count_down_turns();
+    void count_down_turns(const int decrement);
+    void count_down_lives(const int decrement);
     void progress(const int route_choice);
     void disease();
     void breakdown();
-    void win();
+    void storm();
+    bool win();
 };
 
 class pirate {
     public:
-    virtual void harm() = 0;
-    virtual void get_type() = 0;
+    virtual int harm(cruise &boat) = 0;
+    virtual string get_type() = 0;
     virtual ~pirate() {};
 };
 
 pirate * pirate_maker(const int turns);
+
+static const int ENCOUNTER_PIRATES = .07;
+static const int ENCOUNTER_STORM = .06;
+static const int ENCOUNTER_DISEASES = .1;
+static const int ENCOUNTER_MECH_FAILURE = .08;
 
 #endif
 
