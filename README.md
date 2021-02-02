@@ -1,1 +1,1 @@
-# a fun mod for CIV VI
+# a fun showcase for EECS280 concepts
